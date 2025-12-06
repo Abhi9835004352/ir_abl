@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DB: search_engine_db
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - search-engine
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://admin:password@mongodb:27017/search_engine_db?authSource=admin
+      DATABASE_NAME: search_engine_db
+      SERPAPI_KEY: ${SERPAPI_KEY}
+      DEBUG: "True"
+    depends_on:
+      - mongodb
+    networks:
+      - search-engine
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - search-engine
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  search-engine:
+    driver: bridge
