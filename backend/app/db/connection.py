@@ -12,18 +12,18 @@ async def connect_to_mongo():
     """Initialize MongoDB connection"""
     global client, db
     try:
-        # Connect with TLS disabled (development only)
+        # Connect to MongoDB Atlas with proper SSL
         client = AsyncIOMotorClient(
             MONGO_URI,
-            tlsInsecure=True,
-            serverSelectionTimeoutMS=10000,
-            connectTimeoutMS=10000
+            serverSelectionTimeoutMS=15000,
+            connectTimeoutMS=15000,
+            retryWrites=True
         )
         db = client[DATABASE_NAME]
         
         # Test connection
         await db.command("ping")
-        logger.info("✅ Connected to MongoDB")
+        logger.info("✅ Connected to MongoDB Atlas")
         
         # Create collections
         collections = await db.list_collection_names()
