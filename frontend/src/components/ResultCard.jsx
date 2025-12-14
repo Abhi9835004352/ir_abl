@@ -43,12 +43,12 @@ const ResultCard = ({ result }) => {
             </p>
 
             <div className="result-metrics">
-                <div className="metric">
+                {/* <div className="metric">
                     <span className="metric-label">Relevance:</span>
                     <span className="metric-value">
                         {getScorePercentage(result.relevance_score)}%
                     </span>
-                </div>
+                </div> */}
 
                 <div className="metric">
                     <span className="metric-label">SEO Score:</span>

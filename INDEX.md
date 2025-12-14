@@ -210,7 +210,6 @@ mongosh                           # Connect to MongoDB
 show databases                    # List databases
 db.urls.find().limit(5)          # View URLs
 ```
-
 ---
 
 ## 🔑 Key Concepts
